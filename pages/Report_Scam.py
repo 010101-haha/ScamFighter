@@ -91,11 +91,11 @@ def scam_collector(creator_id):
         csvout(scam_df)  
 
     ##st.write(pychain.chain)
-    if pychain_df.loc[0,:].isna==False:
-        st.markdown("##### You reported:")
-        showcolumns =['Sender','Scam_wallet','Amount','Transcation_Hash','Currency','Scammed_date','scam_site','scammer_url','scam_tool','scam_contact','notes' ]
-        shown_table = pychain_df[pychain_df['creator_id'] == creator_id][showcolumns]
-        st.table(shown_table)   
+    # if pychain_df.loc[0,:].isna==False:
+    #     st.markdown("##### You reported:")
+    #     showcolumns =['Sender','Scam_wallet','Amount','Transcation_Hash','Currency','Scammed_date','scam_site','scammer_url','scam_tool','scam_contact','notes' ]
+    #     shown_table = pychain_df[pychain_df['creator_id'] == creator_id][showcolumns]
+    #     st.table(shown_table)   
     ################################################################################
     # Define side bar GUI   
     # if st.sidebar.button("Validate Chain"):
