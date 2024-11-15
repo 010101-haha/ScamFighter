@@ -28,14 +28,31 @@ def csvout(df):
     st.success('Data saved successfully. Thank you for reporting.')
 
 # Define the main function to collect scam information
+import datetime
+
 def scam_collector(creator_id):
     st.write(f'Hello {creator_id}, thank you for your contribution in cleaning up the world a bit....')
-    st.markdown("# See something...? Say Something!")     
+    st.markdown("# See something...? Say Something!")
     st.markdown("##### Record Scams in the Criminal Chain")
 
-    # Upload files
-    uploaded_files = st.file_uploader("**Upload scam relevant files**", accept_multiple_files=True)
-    if st.button("Confirm Upload"):
+    # Unique keys for text inputs to avoid duplicate errors
+    scam_site = st.text_input("Scam platform name/App Name/website link:", key=f"{creator_id}_scam_site")
+    scam_wallet = st.text_input("**Scammer's Receiving Account:**", key=f"{creator_id}_scam_wallet")
+    Transcation_Hash = st.text_input("Transaction Hash:", key=f"{creator_id}_transaction_hash")
+    victim = st.text_input("Victim Account:", key=f"{creator_id}_victim")
+    
+    scam_tool = st.selectbox("Chat tool:", ['', 'Whatsapp', 'Line', 'Phone', 'Wechat', 'Telegram', 'Signal', 'Facebook', 'Instagram', 'Other'], key=f"{creator_id}_scam_tool")
+    scam_contact = st.text_input("Contact number (including country code):", key=f"{creator_id}_scam_contact")
+    scammer_url = st.text_input("Scammer's social media link:", key=f"{creator_id}_scammer_url")
+    notes = st.text_area("Notes", key=f"{creator_id}_notes")
+
+    # File uploader with unique key
+    unique_key_file = f"{creator_id}_file_{datetime.datetime.now().timestamp()}"
+    uploaded_files = st.file_uploader("**Upload scam relevant files**", accept_multiple_files=True, key=unique_key_file)
+    
+    # Button with unique key
+    unique_key_button = f"{creator_id}_button_{datetime.datetime.now().timestamp()}"
+    if st.button("Confirm Upload", key=unique_key_button):
         for uploaded_file in uploaded_files:
             bytes_data = uploaded_file.read()
             record_folder = path.join(UPLOADED_FOLDER, creator_id)
@@ -43,14 +60,15 @@ def scam_collector(creator_id):
             os.makedirs(record_folder, exist_ok=True)
             with open(f'{record_folder}/{record_filename}', "wb") as saved_file:
                 saved_file.write(bytes_data)
-                st.success(f'File "{uploaded_file.name}" uploaded successfully.')
+                st.success(f'File \"{uploaded_file.name}\" uploaded successfully.')
+
+    # Additional code for other form inputs continues here...
+
 
     # Scam details section
     data = {'ScamType': [], 'ScamWallet': [], 'TransactionHash': [], 'TransactionDate': [], 'ScamDate': [],
             'Amount': [], 'Currency': [], 'Victim': []}
     collect_df = pd.DataFrame(data)
-
-    scam_site = st.text_input("Scam platform name/App Name/website link:")
     scam_type = st.selectbox("**Scam Type:**", ['Crytocurrency', 'Bank', 'Gift Card', 'Other'])
 
     scam_wallet = ""
@@ -114,4 +132,3 @@ scam_collector(creator_id)
     # if st.button("In Ashes Criminals Shall Reap!"):
     #      st.audio("https://minty.club/artist/hatebreed/in-ashes-they-shall-reap/hatebreed-in-ashes-they-shall-reap.mp3", format="audio/mp3")
     ################################################################################
-scam_collector(creator_id=creator_id)
